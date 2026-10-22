@@ -39,6 +39,8 @@ import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items as listItems
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -648,8 +650,8 @@ private fun WidgetPicker(onPick: (AppWidgetProviderInfo) -> Unit, onClose: () ->
                 IconButton(onClick = onClose) { Icon(Icons.Filled.Close, "Zavrieť", tint = Os.Text) }
             }
             Spacer(Modifier.height(8.dp))
-            androidx.compose.foundation.lazy.LazyColumn(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                androidx.compose.foundation.lazy.items(providers) { p ->
+            LazyColumn(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                listItems(providers) { p ->
                     val label = remember(p) { p.loadLabel(ctx.packageManager) }
                     val app = remember(p) {
                         runCatching { ctx.packageManager.getApplicationLabel(ctx.packageManager.getApplicationInfo(p.provider.packageName, 0)).toString() }
