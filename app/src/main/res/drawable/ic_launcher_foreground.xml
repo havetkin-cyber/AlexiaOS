@@ -1,0 +1,35 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt"
+    android:width="108dp" android:height="108dp"
+    android:viewportWidth="108" android:viewportHeight="108">
+    <!-- Orbita -->
+    <path
+        android:fillColor="#00000000"
+        android:strokeWidth="2.2"
+        android:pathData="M54,54 m-24,0 a24,9 -25,1 0,48 0 a24,9 -25,1 0,-48 0">
+        <aapt:attr name="android:strokeColor">
+            <gradient android:type="linear"
+                android:startX="30" android:startY="54" android:endX="78" android:endY="54">
+                <item android:offset="0" android:color="#FFB06BFF" />
+                <item android:offset="1" android:color="#FF3DE0FF" />
+            </gradient>
+        </aapt:attr>
+    </path>
+    <!-- Písmeno A -->
+    <path
+        android:fillColor="#00000000"
+        android:strokeWidth="5.5"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:pathData="M41,70 L54,38 L67,70 M46.5,58 L61.5,58">
+        <aapt:attr name="android:strokeColor">
+            <gradient android:type="linear"
+                android:startX="41" android:startY="38" android:endX="67" android:endY="70">
+                <item android:offset="0" android:color="#FFFFFFFF" />
+                <item android:offset="1" android:color="#FFBFD9FF" />
+            </gradient>
+        </aapt:attr>
+    </path>
+    <!-- Satelit -->
+    <path android:fillColor="#FF3DE0FF" android:pathData="M74,44 m-2.6,0 a2.6,2.6 0,1 1,5.2 0 a2.6,2.6 0,1 1,-5.2 0" />
+</vector>
