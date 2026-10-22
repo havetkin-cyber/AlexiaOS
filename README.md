@@ -9,7 +9,9 @@ vyzerá telefón ako AlexiaOS.
 |---|---|
 | Úvod a zámok | Animovaný boot, PIN (PBKDF2-SHA256, 210 000 iterácií, soľ), predlžovanie zámku po chybách |
 | Domovská obrazovka | Hodiny, widgety, appky AlexiaOS, sekcia **Alexia Core** (automaticky nájde appky Alexia), dok |
-| Ovládací panel | Potiahnutie zhora: Wi-Fi, Bluetooth, baterka, jas, režim súkromia, zamknutie |
+| Centrum notifikácií | Potiahnutie zhora: prepínače + notifikácie celého telefónu v štýle AlexiaOS (otvoriť, zrušiť, skryť v režime súkromia) |
+| Plocha | Pripnuté appky, priečinky, systémové widgety, jednotný štýl ikon, 2× ťuk = zamknúť, podržanie appky = možnosti |
+| Súbory | Šifrované úložisko a galéria: každý súbor vlastný kľúč AES-256 zabalený kľúčom z čipu, AES-GCM po 1 MB blokoch |
 | Všetky appky | Potiahnutie nahor: skutočné appky telefónu s vyhľadávaním |
 | Trezor | Poznámky šifrované AES-256-GCM kľúčom z Android Keystore (StrongBox/TEE) + pohľad „ako to vidí zlodej“ |
 | Správy | Ukážka end-to-end šifrovania: ECDH P-256 + AES-256-GCM, odtlačky kľúčov, čo ide sieťou |

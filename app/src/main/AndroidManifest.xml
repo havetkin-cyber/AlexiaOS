@@ -9,6 +9,9 @@
         </intent>
     </queries>
 
+    <!-- Odinštalovanie appky z ponuky na ploche -->
+    <uses-permission android:name="android.permission.REQUEST_DELETE_PACKAGES" />
+
     <application
         android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
@@ -35,5 +38,16 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+
+        <!-- Centrum notifikácií AlexiaOS -->
+        <service
+            android:name=".system.AlexiaNotificationService"
+            android:exported="false"
+            android:label="AlexiaOS – centrum notifikácií"
+            android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE">
+            <intent-filter>
+                <action android:name="android.service.notification.NotificationListenerService" />
+            </intent-filter>
+        </service>
     </application>
 </manifest>

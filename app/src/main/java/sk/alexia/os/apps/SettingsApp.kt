@@ -36,7 +36,13 @@ import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import sk.alexia.os.data.HomeLayout
 import sk.alexia.os.data.OsStore
+import sk.alexia.os.system.AlexiaNotificationService
+import androidx.compose.material3.Switch
+import androidx.compose.material3.SwitchDefaults
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.compose.LifecycleEventEffect
 import sk.alexia.os.ui.AppScaffold
 import sk.alexia.os.ui.AuroraWallpaper
 import sk.alexia.os.ui.Glass
@@ -51,6 +57,9 @@ fun SettingsApp(store: OsStore, wallpaper: Int, onWallpaper: (Int) -> Unit, onBa
     var pinMsg by remember { mutableStateOf<String?>(null) }
     var busy by remember { mutableStateOf(false) }
     var custom by remember { mutableStateOf(store.customWallpaper) }
+    var layout by remember { mutableStateOf(HomeLayout.load(ctx)) }
+    var notifAccess by remember { mutableStateOf(AlexiaNotificationService.hasAccess(ctx)) }
+    LifecycleEventEffect(Lifecycle.Event.ON_RESUME) { notifAccess = AlexiaNotificationService.hasAccess(ctx) }
     val scope = rememberCoroutineScope()
 
     val picker = rememberLauncherForActivityResult(ActivityResultContracts.OpenDocument()) { uri ->
@@ -83,7 +92,7 @@ fun SettingsApp(store: OsStore, wallpaper: Int, onWallpaper: (Int) -> Unit, onBa
         return
     }
 
-    AppScaffold("Nastavenia", "AlexiaOS 0.1 • ukážková verzia", accent = listOf(Color(0xFF8A91B0), Os.Violet), onBack = onBack) {
+    AppScaffold("Nastavenia", "AlexiaOS 0.2 • ukážková verzia", accent = listOf(Color(0xFF8A91B0), Os.Violet), onBack = onBack) {
         Column(Modifier.verticalScroll(rememberScrollState())) {
             SectionTitle("Tapeta")
             Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
@@ -110,6 +119,27 @@ fun SettingsApp(store: OsStore, wallpaper: Int, onWallpaper: (Int) -> Unit, onBa
                 if (custom != null) "Ťukni pre zmenu fotky" else "Napríklad tvoja obľúbená fotka",
             ) { picker.launch(arrayOf("image/*")) }
 
+            SectionTitle("Plocha")
+            Glass(Modifier.fillMaxWidth().padding(vertical = 4.dp)) {
+                Row(Modifier.padding(14.dp), verticalAlignment = Alignment.CenterVertically) {
+                    Column(Modifier.weight(1f)) {
+                        Text("Jednotný štýl ikon", color = Os.Text, style = MaterialTheme.typography.titleMedium)
+                        Text("Ikony appiek vo farbách AlexiaOS (Android 13+)", color = Os.TextDim, style = MaterialTheme.typography.bodySmall)
+                    }
+                    Switch(
+                        checked = layout.themedIcons,
+                        onCheckedChange = { on -> layout = layout.copy(themedIcons = on).also { HomeLayout.save(ctx, it) } },
+                        colors = SwitchDefaults.colors(checkedTrackColor = Os.Cyan),
+                    )
+                }
+            }
+            SettingRow(
+                if (notifAccess) "🔔 Centrum notifikácií je zapnuté" else "🔔 Zapnúť centrum notifikácií",
+                if (notifAccess) "Notifikácie sa zobrazujú v ovládacom paneli AlexiaOS" else "Povoľ prístup k notifikáciám",
+            ) {
+                runCatching { ctx.startActivity(AlexiaNotificationService.accessIntent(ctx).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)) }
+            }
+
             SectionTitle("Zabezpečenie")
             SettingRow("Zmeniť PIN", pinMsg ?: "PIN AlexiaOS chráni prístup k systému") { changingPin = true; pinMsg = null }
             SettingRow("Zámok telefónu a šifrovanie", "Systémové nastavenia zabezpečenia") {
@@ -127,7 +157,7 @@ fun SettingsApp(store: OsStore, wallpaper: Int, onWallpaper: (Int) -> Unit, onBa
             SectionTitle("O systéme")
             Glass(Modifier.fillMaxWidth()) {
                 Column(Modifier.padding(14.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
-                    Text("AlexiaOS 0.1 „Aurora“", color = Os.Text, style = MaterialTheme.typography.titleMedium)
+                    Text("AlexiaOS 0.2 „Aurora“", color = Os.Text, style = MaterialTheme.typography.titleMedium)
                     Text(
                         "Ukážka (koncept) súkromného mobilného systému. Beží ako vrstva nad Androidom – " +
                             "rozhranie, šifrovanie a appky sú AlexiaOS, jadro a ovládače zostávajú z Androidu.",

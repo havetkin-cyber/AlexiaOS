@@ -64,6 +64,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import sk.alexia.os.apps.FilesApp
 import sk.alexia.os.apps.MessagesApp
 import sk.alexia.os.apps.SecurityApp
 import sk.alexia.os.apps.SettingsApp
@@ -74,7 +75,7 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
-enum class OsScreen { HOME, VAULT, MESSAGES, SECURITY, SETTINGS }
+enum class OsScreen { HOME, VAULT, FILES, MESSAGES, SECURITY, SETTINGS }
 
 private enum class Phase { BOOT, SETUP, LOCKED, UNLOCKED }
 
@@ -127,6 +128,7 @@ fun AlexiaOS() {
                         onLock = { if (store.hasPin) phase = Phase.LOCKED },
                     )
                     OsScreen.VAULT -> VaultApp(store, home)
+                    OsScreen.FILES -> FilesApp(home)
                     OsScreen.MESSAGES -> MessagesApp(home)
                     OsScreen.SECURITY -> SecurityApp(store, home)
                     OsScreen.SETTINGS -> SettingsApp(store, wallpaper, onWallpaper = {
