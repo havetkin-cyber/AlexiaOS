@@ -27,7 +27,11 @@ jobs:
         run: |
           if [ -n "$SIGNING_PASSWORD" ]; then echo "Podpisujem stálym kľúčom"; else echo "::warning::Chýba secret SIGNING_PASSWORD – APK bude podpísané dočasným kľúčom"; fi
           chmod +x gradlew
-          ./gradlew assembleDebug --stacktrace
+          set -o pipefail
+          ./gradlew assembleDebug 2>&1 | tee build.log || {
+            grep -E '^e: |error:|What went wrong' -A2 build.log | head -60 | while IFS= read -r l; do echo "::error::$l"; done
+            exit 1
+          }
 
       - uses: actions/upload-artifact@v4
         with:
